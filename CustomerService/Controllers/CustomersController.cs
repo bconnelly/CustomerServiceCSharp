@@ -8,12 +8,21 @@ namespace CustomerService.Controllers
     [Route("CustomersService")]
     public class CustomersController : ControllerBase
     {
+
+        private readonly CustomerContext context;
+
+        public CustomersController(CustomerContext context)
+        {
+            this.context = context;
+        }
+
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [HttpGet("getAllCustomers")]
-        public ActionResult<string> Get()
+        public ActionResult<IEnumerable<Customer>> Get()
         {
-            return JsonSerializer.Serialize(new Customer("c sharp bob", "123 main st", 12, 2));
+            return context.Customers;
+            //return JsonSerializer.Serialize(new Customer("c sharp bob", "123 main st", 12, 2));
         }
 
         // GET api/<ValuesController>/5
