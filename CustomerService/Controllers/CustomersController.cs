@@ -1,5 +1,9 @@
 ﻿using CustomersService.DBAccessEntities;
+using CustomersService.DomainLogic;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Text.Json;
 
 namespace CustomerService.Controllers
@@ -9,45 +13,49 @@ namespace CustomerService.Controllers
     public class CustomersController : ControllerBase
     {
 
-        private readonly CustomerContext context;
+        private CustomerLogic customerLogic;
 
-        public CustomersController(CustomerContext context)
+        public CustomersController(CustomerLogic customerLogic)
         {
-            this.context = context;
+            this.customerLogic = customerLogic;
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         [HttpGet("getAllCustomers")]
-        public ActionResult<IEnumerable<Customer>> Get()
+        public ActionResult<IEnumerable<Customer>> GetAllCustomers()
         {
-            return context.Customers;
+            return customerLogic.getAllCustomers();
             //return JsonSerializer.Serialize(new Customer("c sharp bob", "123 main st", 12, 2));
         }
 
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("getCustomerByFirstName/{firstName}")]
+        public ActionResult<IEnumerable<Customer>> GetCustomerByFirstName(string firstName)
         {
-            return $"value: {id}";
+            return customerLogic.getCustomerByFirstName(firstName);
         }
 
-        // POST api/<ValuesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("customerExists/{firstName}")]
+        public ActionResult<Boolean> CustomerExists(string firstName)
         {
+            return customerLogic.customerExists(firstName);
         }
 
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet("insertCustomer/")]
+        public void InsertCustomer(string firstName, string address, float cash, int tableNumber)
         {
+            customerLogic.insertCustomer(firstName, address, cash, tableNumber);
         }
 
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("bootCustomer/{firstName}")]
+        public void DeleteCustomer(string firstName)
         {
+            customerLogic.deleteCustomer(firstName);
         }
+
+        [HttpGet("getCustomersAtTable/{tableNumber}")]
+        public ActionResult<List<Customer>> GetCustomersAtTable(int tableNumber)
+        {
+            return customerLogic.GetCustomersAtTable(tableNumber);
+        }
+
     }
 }
