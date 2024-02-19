@@ -1,5 +1,6 @@
 ﻿using CustomersService.DBAccessEntities;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 
 namespace CustomersService.DomainLogic
 {
@@ -29,19 +30,18 @@ namespace CustomersService.DomainLogic
         }
 
         // assume only one customer is returned? what if more are?
-        public Boolean insertCustomer(string firstName, string address, float cash, int tableNumber)
+        public Customer insertCustomer(string firstName, string address, float cash, int tableNumber)
         {
-            context.Add(new Customer(firstName, address, cash, tableNumber));
+            Customer newCustomer = new Customer(firstName, address, cash, tableNumber);
+            context.Add(newCustomer);
             context.SaveChanges();
-            
-            return true;
-            //List<Customer> ret = context.Customers.Where(x => x.first_name == firstName && x.address == address && x.cash == cash && x.table_number == tableNumber).ToList();
+
+            return context.Customers.Where(x => x.Id == newCustomer.Id).AsNoTracking().First();
         }
 
         public void deleteCustomer(string firstName)
         {
             context.Customers.Remove(context.Customers.Where(x => x.first_name == firstName).First());
-            context.SaveChanges();
         }
 
         public List<Customer> GetCustomersAtTable(int tableNumber)

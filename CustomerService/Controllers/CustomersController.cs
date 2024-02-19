@@ -1,10 +1,6 @@
 ﻿using CustomersService.DBAccessEntities;
 using CustomersService.DomainLogic;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Text.Json;
 
 namespace CustomerService.Controllers
 {
@@ -39,10 +35,10 @@ namespace CustomerService.Controllers
             return customerLogic.customerExists(firstName);
         }
 
-        [HttpGet("insertCustomer/")]
-        public void InsertCustomer(string firstName, string address, float cash, int tableNumber)
+        [HttpGet("insertCustomer/{firstName}/{address}/{cash}/{tableNumber}")]
+        public ActionResult<Customer> InsertCustomer(string firstName, string address, float cash, int tableNumber)
         {
-            customerLogic.insertCustomer(firstName, address, cash, tableNumber);
+            return customerLogic.insertCustomer(firstName, address, cash, tableNumber);
         }
 
         [HttpPost("bootCustomer/{firstName}")]
