@@ -9,22 +9,31 @@ namespace CustomerService.Controllers
     public class CustomersController : ControllerBase
     {
 
-        private CustomerLogic customerLogic;
+        private CustomerDomainLogic customerLogic;
 
-        public CustomersController(CustomerLogic customerLogic)
+        public CustomersController(CustomerDomainLogic customerLogic)
         {
             this.customerLogic = customerLogic;
+        }
+
+        [Route("error-dev")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public ActionResult HandleErrorDev() => Problem();
+
+        [Route("error")]
+        public ActionResult HandleError()
+        {
+            return 
         }
 
         [HttpGet("getAllCustomers")]
         public ActionResult<IEnumerable<Customer>> GetAllCustomers()
         {
             return customerLogic.getAllCustomers();
-            //return JsonSerializer.Serialize(new Customer("c sharp bob", "123 main st", 12, 2));
         }
 
         [HttpGet("getCustomerByFirstName/{firstName}")]
-        public ActionResult<IEnumerable<Customer>> GetCustomerByFirstName(string firstName)
+        public ActionResult<Customer> GetCustomerByFirstName(string firstName)
         {
             return customerLogic.getCustomerByFirstName(firstName);
         }

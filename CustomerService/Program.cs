@@ -16,7 +16,7 @@ builder.Services.AddDbContext<CustomerContext>(opt => opt.UseMySql("server=" + d
 
 
 // Add services to the container.
-builder.Services.AddScoped<CustomerLogic>();
+builder.Services.AddScoped<CustomerDomainLogic>();
 
 
 builder.Services.AddControllers();

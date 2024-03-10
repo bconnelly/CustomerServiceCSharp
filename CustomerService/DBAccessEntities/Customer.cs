@@ -1,6 +1,6 @@
 ﻿namespace CustomersService.DBAccessEntities
 {
-    public class Customer
+    public record Customer
     {
         public Customer(string first_name, string address, float cash, int table_number)
         {
@@ -15,5 +15,13 @@
         public string address { get; set; }
         public float cash { get; set; }
         public int table_number { get; set; }
+
+        public bool equalsExceptId(Customer otherCustomer)
+        {
+            return first_name == otherCustomer.first_name &&
+                address == otherCustomer.address &&
+                cash == otherCustomer.cash &&
+                table_number == otherCustomer.table_number;
+        }
     }
 }
