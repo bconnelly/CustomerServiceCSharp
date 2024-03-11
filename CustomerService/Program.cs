@@ -1,5 +1,6 @@
 using CustomersService.DBAccessEntities;
 using CustomersService.DomainLogic;
+using CustomersService.ExceptionManagment;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,6 @@ string? dbServer = Environment.GetEnvironmentVariable("MYSQL_SERVER");
 builder.Services.AddDbContext<CustomerContext>(opt => opt.UseMySql("server=" + dbServer + ";uid=" + dbUser + ";pwd=" + dbPass + ";database=customers", 
     ServerVersion.AutoDetect("server=localhost;uid=" + dbUser + ";pwd=" + dbPass + ";database=customers")));
 
-
-
 // Add services to the container.
 builder.Services.AddScoped<CustomerDomainLogic>();
 
@@ -23,6 +22,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<CustomerExceptionHandler>();
+builder.Services.AddExceptionHandler<GenericExceptionHandler>();
 
 
 var app = builder.Build();
@@ -33,6 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseExceptionHandler(_ => { });
 
 app.UseHttpsRedirection();
 

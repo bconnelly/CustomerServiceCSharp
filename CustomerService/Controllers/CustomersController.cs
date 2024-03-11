@@ -16,16 +16,6 @@ namespace CustomerService.Controllers
             this.customerLogic = customerLogic;
         }
 
-        [Route("error-dev")]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public ActionResult HandleErrorDev() => Problem();
-
-        [Route("error")]
-        public ActionResult HandleError()
-        {
-            return 
-        }
-
         [HttpGet("getAllCustomers")]
         public ActionResult<IEnumerable<Customer>> GetAllCustomers()
         {

@@ -38,7 +38,7 @@ namespace CustomersService.DomainLogic
 
             return context.Customers.Where(x => x.Id == newCustomer.Id).AsNoTracking().First();
         }
-
+        
         public void deleteCustomer(string firstName)
         {
             context.Customers.Remove(context.Customers.Where(x => x.first_name == firstName).First());
